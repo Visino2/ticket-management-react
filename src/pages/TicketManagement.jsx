@@ -15,19 +15,19 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
   const [errors, setErrors] = useState({});
   const [toast, setToast] = useState(null);
 
-                      // Load tickets from localStorage
+ 
   useEffect(() => {
     const storedTickets = JSON.parse(localStorage.getItem("ticketapp_tickets") || "[]");
     setTickets(storedTickets);
   }, []);
    
-                    // Save tickets to localStorage
+ 
   const saveTickets = (newTickets) => {
     localStorage.setItem("ticketapp_tickets", JSON.stringify(newTickets));
     setTickets(newTickets);
   };
 
-                     // Validate ticket form fields
+  
   const validate = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
@@ -38,7 +38,6 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
     return newErrors;
   };
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = validate();
@@ -70,7 +69,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
     setErrors({});
   };
 
-                    // Handle delete ticket
+  // Handle delete ticket
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this ticket?")) {
       const updated = tickets.filter((t) => t.id !== id);
@@ -79,14 +78,14 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
     }
   };
 
-                     // Open edit modal
+  // Open edit modal
   const openEditModal = (ticket) => {
     setEditingTicket(ticket);
     setFormData(ticket);
     setShowModal(true);
   };
 
-                // Ticket status color classes
+
   const statusColors = {
     open: "bg-green-100 text-green-800",
     in_progress: "bg-amber-100 text-amber-800",
@@ -95,7 +94,6 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-     
       {toast && (
         <Toast
           message={toast.message}
@@ -104,7 +102,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
         />
       )}
 
-                           {/* Header */}
+      {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-[1440px] mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-indigo-600">TicketFlow</h1>
@@ -125,28 +123,38 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
         </div>
       </header>
 
-                           {/* Main Content */}
+      {/* Main Content */}
       <main className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Ticket Management</h2>
-          <button
-            onClick={() => {
-              setShowModal(true);
-              setEditingTicket(null);
-              setFormData({
-                title: "",
-                description: "",
-                status: "open",
-                priority: "medium",
-              });
-            }}
-            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-          >
-            <Plus size={20} /> New Ticket
-          </button>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => onNavigate("dashboard")}
+              className="flex items-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-red-500 hover:text-white transition"
+            >
+              Back to Dashboard
+            </button>
+
+            <button
+              onClick={() => {
+                setShowModal(true);
+                setEditingTicket(null);
+                setFormData({
+                  title: "",
+                  description: "",
+                  status: "open",
+                  priority: "medium",
+                });
+              }}
+              className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            >
+              <Plus size={20} /> New Ticket
+            </button>
+          </div>
         </div>
 
-                        {/* Tickets List */}
+        {/* Tickets List */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tickets.map((ticket) => (
             <div
@@ -184,7 +192,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
           ))}
         </div>
 
-                        {/* Empty State */}
+                   {/* Empty State */}
         {tickets.length === 0 && (
           <div className="text-center py-16">
             <p className="text-gray-500 text-lg">
@@ -194,7 +202,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
         )}
       </main>
 
-                          {/* Modal */}
+                   {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl p-8 max-w-md w-full">
@@ -202,7 +210,6 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
               {editingTicket ? "Edit Ticket" : "New Ticket"}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Title *
@@ -220,8 +227,8 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
                 )}
               </div>
 
-                                {/* Description */}
-              <div>
+                    {/* Description */}
+               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description
                 </label>
@@ -235,7 +242,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
                 />
               </div>
 
-                                 {/* Status */}
+              {/* Status */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Status *
@@ -256,7 +263,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
                 )}
               </div>
 
-                                     {/* Priority */}
+                      {/* Priority */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Priority
@@ -274,7 +281,7 @@ const TicketManagement = ({ onNavigate, onLogout }) => {
                 </select>
               </div>
 
-                                        {/* Actions */}
+              {/* Actions */}
               <div className="flex gap-4">
                 <button
                   type="submit"
